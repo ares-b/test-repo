@@ -1,0 +1,29 @@
+SELECT
+    SOURCE_TABLE.ELT_NETWORK_ID                 AS 'ID_APPORTEUR',
+    SOURCE_TABLE.ELT_NETWORK_NAME               AS 'NOMAPPORTEUR',
+    SOURCE_TABLE.PARENT_ID                      AS 'ID_RESEAU_APPORTEUR',
+    SOURCE_TABLE.EFFECTIVESTARTDATE             AS 'EFFECTIVESTARTDATE',
+    SOURCE_TABLE.EFFECTIVEENDDATE               AS 'EFFECTIVEENDDATE',
+    SYSDATE                                     AS 'LASTMODIFIED',
+    SYSDATE                                     AS 'CREATEDDATE'
+FROM
+    OWN_24456_ODS.RF_KVIC_CRE_CRE_NETWORKS SOURCE_TABLE
+WHERE
+    NOT EXISTS (
+        SELECT
+            1
+        FROM
+            OWN_24456_ODS.DH_KSTR_APPORTEUR TARGET_TABLE
+        WHERE
+            SOURCE_TABLE.ELT_NETWORK_ID = TARGET_TABLE.ID_APPORTEUR
+            AND
+            SOURCE_TABLE.LASTMODIFIED >= (
+                SELECT
+                    DAT_VAL
+                FROM
+                    parametrage
+            )
+            AND
+            SOURCE_TABLE.ELT_NETWORK_NAME = TARGET_TABLE.NOMAPPORTEUR
+            SOURCE_TABLE.PARENT_ID = TARGET_TABLE.ID_RESEAU_APPORTEUR
+    )

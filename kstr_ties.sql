@@ -1,0 +1,58 @@
+SELECT
+    SOURCE_TABLE.PARTY_ID                       AS 'ID_TIERS',
+    'AEPPRO'                                    AS 'CODETYPEIDENTIFIANT',
+    'AEP'                                       AS 'CODEEMETTEURIDENTIFIANT',
+    SOURCE_TABLE.TYPE_PARTY                     AS 'TYPE_PARTY',
+    SOURCE_TABLE.TITLE                          AS 'TITLE',
+    SOURCE_TABLE.FIRST_NAME                     AS 'FIRST_NAME',
+    SOURCE_TABLE.NAME                           AS 'NAME',
+    SOURCE_TABLE.PARTICULE                      AS 'PARTICULE',
+    SOURCE_TABLE.ACTIVE_STATUS                  AS 'ACTIVE_STATUS',
+    SOURCE_TABLE.COMMERCIAL_STATUS              AS 'COMMERCIAL_STATUS',
+    SOURCE_TABLE.LEGAL_ENTITY_IDENTIFIER        AS 'LEGAL_ENTITY_IDENTIFIER',
+    SOURCE_TABLE.EFFECTIVESTARTDATE             AS 'EFFECTIVESTARTDATE',
+    SOURCE_TABLE.EFFECTIVEENDDATE               AS 'EFFECTIVEENDDATE',
+    SYSDATE                                     AS 'LASTMODIFIED',
+    SYSDATE                                     AS 'CREATEDDATE'
+FROM
+    OWN_24456_ODS.RF_KVIC_CRE_CRE_PARTIES SOURCE_TABLE
+WHERE
+    NOT EXISTS (
+        SELECT
+            1
+        FROM
+            OWN_24456_ODS.DH_KSTR_TIERS TARGET_TABLE
+        WHERE
+            SOURCE_TABLE.PARTY_ID = TARGET_TABLE.ID_TIERS
+            AND
+            SOURCE_TABLE.LASTMODIFIED >= (
+                SELECT
+                    DAT_VAL
+                FROM
+                    parametrage
+            )
+            AND
+            'AEPPRO' = TARGET_TABLE.CODETYPEIDENTIFIANT
+            AND
+            'AEP' = TARGET_TABLE.CODEEMETTEURIDENTIFIANT
+            AND
+            SOURCE_TABLE.TYPE_PARTY = TARGET_TABLE.TYPE_PARTY
+            AND
+            SOURCE_TABLE.TITLE = TARGET_TABLE.TITLE
+            AND
+            SOURCE_TABLE.FIRST_NAME = TARGET_TABLE.FIRST_NAME
+            AND
+            SOURCE_TABLE.NAME = TARGET_TABLE.NAME
+            AND
+            SOURCE_TABLE.PARTICULE = TARGET_TABLE.PARTICULE
+            AND
+            SOURCE_TABLE.ACTIVE_STATUS = TARGET_TABLE.ACTIVE_STATUS
+            AND
+            SOURCE_TABLE.COMMERCIAL_STATUS = TARGET_TABLE.COMMERCIAL_STATUS
+            AND
+            SOURCE_TABLE.LEGAL_ENTITY_IDENTIFIER = TARGET_TABLE.LEGAL_ENTITY_IDENTIFIER
+            AND
+            SOURCE_TABLE.EFFECTIVESTARTDATE = TARGET_TABLE.EFFECTIVESTARTDATE
+            AND
+            SOURCE_TABLE.EFFECTIVEENDDATE = TARGET_TABLE.EFFECTIVEENDDATE
+    )

@@ -1,0 +1,66 @@
+SELECT
+    SOURCE_TABLE.POL_OPERATION_ID               AS 'ID_OPERATION',
+    SOURCE_TABLE.EXTERNAL_REFERENCE             AS 'TYPE_OPERATION',
+    'AEP'                                       AS 'EMETTEURIDENTIFIANT',
+    'AEPPRO'                                    AS 'TYPEIDENTIFIANT'
+    SOURCE_TABLE.CREATION_DATE                  AS 'DATECREATION',
+    SOURCE_TABLE.EFFECT_DATE                    AS 'DATEEFFET',
+    SOURCE_TABLE.POLICY_ID                      AS 'ID_CONTRAT',
+    SOURCE_TABLE.STATUS                         AS 'CODESTATUS',
+    SOURCE_TABLE.NET_AMOUNT                     AS 'MONTANTNET',
+    SOURCE_TABLE.MOTIVE_ID                      AS 'ACTIVE_STATUS',
+    SOURCE_TABLE.EFFECTIVESTARTDATE             AS 'EFFECTIVESTARTDATE',
+    SOURCE_TABLE.EFFECTIVEENDDATE               AS 'EFFECTIVEENDDATE',
+    SYSDATE                                     AS 'LASTMODIFIED',
+    SYSDATE                                     AS 'CREATEDDATE'
+FROM
+    OWN_24456_ODS.RF_KVIC_CRE_CRE_POLICY_OPERATIONS SOURCE_TABLE
+WHERE
+    SOURCE_TABLE.EXTERNAL_REFERENCE IN (
+        'AFN', 'VER', 'VPR', 'TVT', 'TIE', 'VEI', 'RCP', 'RPR', 'TPR', 'TRP',
+        'RPA', 'TIPS'
+    )
+    AND
+    EXISTS (
+        SELECT
+            1
+        FROM
+            OWN_24456_ODS.DH_KSTR_CONTRATEPARGNE CONTRATEPARGNE
+        WHERE SOURCE_TABLE.POLICY_ID = CONTRATEPARGNE.ID_CONTRAT
+    )
+    AND
+    NOT EXISTS (
+        SELECT
+            1
+        FROM
+            OWN_24456_ODS.DH_KSTR_OPERATIONS TARGET_TABLE
+        WHERE
+            SOURCE_TABLE.PARTY_ID = TARGET_TABLE.ID_TIERS
+            AND
+            SOURCE_TABLE.LASTMODIFIED >= (
+                SELECT
+                    DAT_VAL
+                FROM
+                    parametrage
+            )
+            AND
+            'AEPPRO' = TARGET_TABLE.TYPEIDENTIFIANT
+            AND
+            'AEP' = TARGET_TABLE.EMETTEURIDENTIFIANT
+            AND
+            SOURCE_TABLE.POL_OPERATION_ID = TARGET_TABLE.ID_OPERATION
+            AND
+            SOURCE_TABLE.EXTERNAL_REFERENCE = TARGET_TABLE.TYPE_OPERATION
+            AND
+            SOURCE_TABLE.CREATION_DATE = TARGET_TABLE.DATECREATION
+            AND
+            SOURCE_TABLE.EFFECT_DATE = TARGET_TABLE.DATEEFFET
+            AND
+            SOURCE_TABLE.POLICY_ID = TARGET_TABLE.ID_CONTRAT
+            AND
+            SOURCE_TABLE.STATUS = TARGET_TABLE.CODESTATUS
+            AND
+            SOURCE_TABLE.NET_AMOUNT = TARGET_TABLE.MONTANTNET
+            AND
+            SOURCE_TABLE.MOTIVE_ID = TARGET_TABLE.ACTIVE_STATUS            
+    )
