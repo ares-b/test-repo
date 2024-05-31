@@ -26,7 +26,9 @@ WHERE
         FROM
             OWN_24456_ODS.DH_KSTR_SITUATIONCONTRAT TARGET_TABLE
         WHERE
-            SOURCE_TABLE.POL_POSITION_ID = TARGET_TABLE.POL_POSITION_ID
+            SOURCE_TABLE.POL_POSITION_ID = TARGET_TABLE.ID_SITUATION
+            AND
+            SOURCE_TABLE.POLICY_ID = TARGET_TABLE.ID_CONTRAT
             AND
             SOURCE_TABLE.LASTMODIFIED >= (
                 SELECT
@@ -34,10 +36,6 @@ WHERE
                 FROM
                     parametrage
             )
-            AND
-            SOURCE_TABLE.POL_POSITION_ID = TARGET_TABLE.ID_SITUATION
-            AND
-            SOURCE_TABLE.POLICY_ID = TARGET_TABLE.ID_CONTRAT
             AND
             SOURCE_TABLE.STATUS = TARGET_TABLE.STATUT
             AND
