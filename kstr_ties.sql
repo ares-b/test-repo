@@ -1,19 +1,19 @@
 SELECT
-    SOURCE_TABLE.PARTY_ID                       AS 'ID_TIERS',
-    'AEPPRO'                                    AS 'CODETYPEIDENTIFIANT',
-    'AEP'                                       AS 'CODEEMETTEURIDENTIFIANT',
-    SOURCE_TABLE.TYPE_PARTY                     AS 'TYPE_PARTY',
-    SOURCE_TABLE.TITLE                          AS 'TITLE',
-    SOURCE_TABLE.FIRST_NAME                     AS 'FIRST_NAME',
-    SOURCE_TABLE.NAME                           AS 'NAME',
-    SOURCE_TABLE.PARTICULE                      AS 'PARTICULE',
-    SOURCE_TABLE.ACTIVE_STATUS                  AS 'ACTIVE_STATUS',
-    SOURCE_TABLE.COMMERCIAL_STATUS              AS 'COMMERCIAL_STATUS',
-    SOURCE_TABLE.LEGAL_ENTITY_IDENTIFIER        AS 'LEGAL_ENTITY_IDENTIFIER',
-    SOURCE_TABLE.EFFECTIVESTARTDATE             AS 'EFFECTIVESTARTDATE',
-    SOURCE_TABLE.EFFECTIVEENDDATE               AS 'EFFECTIVEENDDATE',
-    SYSDATE                                     AS 'LASTMODIFIED',
-    SYSDATE                                     AS 'CREATEDDATE'
+    SOURCE_TABLE.PARTY_ID                       AS ID_TIERS,
+    'AEPPRO'                                    AS CODETYPEIDENTIFIANT,
+    'AEP'                                       AS CODEEMETTEURIDENTIFIANT,
+    SOURCE_TABLE.TYPE_PARTY                     AS TYPE_PARTY,
+    SOURCE_TABLE.TITLE                          AS TITLE,
+    SOURCE_TABLE.FIRST_NAME                     AS FIRST_NAME,
+    SOURCE_TABLE.NAME                           AS NAME,
+    SOURCE_TABLE.PARTICULE                      AS PARTICULE,
+    SOURCE_TABLE.ACTIVE_STATUS                  AS ACTIVE_STATUS,
+    SOURCE_TABLE.COMMERCIAL_STATUS              AS COMMERCIAL_STATUS,
+    SOURCE_TABLE.LEGAL_ENTITY_IDENTIFIER        AS LEGAL_ENTITY_IDENTIFIER,
+    SOURCE_TABLE.EFFECTIVESTARTDATE             AS EFFECTIVESTARTDATE,
+    SOURCE_TABLE.EFFECTIVEENDDATE               AS EFFECTIVEENDDATE,
+    SYSDATE                                     AS LASTMODIFIED,
+    SYSDATE                                     AS CREATEDDATE
 FROM
     OWN_24456_ODS.RF_KVIC_CRE_CRE_PARTIES SOURCE_TABLE
 WHERE
